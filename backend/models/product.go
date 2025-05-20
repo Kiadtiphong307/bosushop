@@ -8,10 +8,10 @@ type Product struct {
 	Description string    `gorm:"type:text"`
 	ImageURL    string
 	Price       float64   `gorm:"not null"`
-	Type        string    `gorm:"type:enum('game_id','topup_card');not null"`
+	Category    string    `gorm:"type:enum('game_id','topup_card');not null"`
+	CategoryID  uint      `gorm:"not null"`
 	Available   bool      `gorm:"default:true"`
-	SellerID    uint      `gorm:"not null"`
-	Seller      User      `gorm:"foreignKey:SellerID"`
+	Stock       int       `gorm:"not null"`
 	Orders      []Order   `gorm:"foreignKey:ProductID"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
