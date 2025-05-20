@@ -7,6 +7,7 @@ import (
 
 	"backend/database"
 	"backend/routes"
+	"backend/seed"
 )
 
 func main() {
@@ -16,7 +17,12 @@ func main() {
 	database.InitDatabase()
 
 	// เรียกใช้ routes ทั้งหมด
-	routes.AuthRoutes(app) // routes สำหรับการสมัครสมาชิกและเข้าสู่ระบบ
+	routes.Routes(app) // เรียกใช้ routes ทั้งหมด
+	routes.OrderRoutes(app)
+	routes.ProductRoutes(app)
+
+	// เรียกใช้ seed ข้อมูล
+	seed.InitSeeder(database.DB)
 
 	app.Listen(":8080")
 }

@@ -8,8 +8,8 @@ type Product struct {
 	Description string    `gorm:"type:text"`
 	ImageURL    string
 	Price       float64   `gorm:"not null"`
-	Category    string    `gorm:"type:enum('game_id','topup_card');not null"`
-	CategoryID  uint      `gorm:"not null"`
+	CategoryID  uint      `gorm:"not null"`                          // FK
+	Category    Category  `gorm:"foreignKey:CategoryID"`            // Join table
 	Available   bool      `gorm:"default:true"`
 	Stock       int       `gorm:"not null"`
 	Orders      []Order   `gorm:"foreignKey:ProductID"`

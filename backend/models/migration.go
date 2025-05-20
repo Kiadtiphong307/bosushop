@@ -14,6 +14,7 @@ func MigrateTables(db *gorm.DB) error {
 		&Product{},
 		&Coupon{},
 		&Order{},
+		&Category{},
 	)
 
 	if err != nil {
