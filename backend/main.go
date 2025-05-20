@@ -1,11 +1,12 @@
 package main
 
 import (
-	"log"
+
 
 	"github.com/gofiber/fiber/v2"
 
 	"backend/database"
+	"backend/routes"
 )
 
 func main() {
@@ -14,9 +15,8 @@ func main() {
 	// เชื่อมต่อฐานข้อมูล
 	database.InitDatabase()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
+	// เรียกใช้ routes ทั้งหมด
+	routes.AuthRoutes(app) // routes สำหรับการสมัครสมาชิกและเข้าสู่ระบบ
 
-	log.Fatal(app.Listen(":8080"))
+	app.Listen(":8080")
 }
