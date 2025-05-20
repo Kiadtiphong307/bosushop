@@ -226,6 +226,7 @@ go get gorm.io/driver/mysql
 go get github.com/joho/godotenv
 go get golang.org/x/crypto/bcrypt
 go install github.com/air-verse/air@latest
+go get github.com/go-playground/validator/v10
 //go mod tidy 
 
 
