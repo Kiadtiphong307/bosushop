@@ -21,6 +21,7 @@ func main() {
 	routes.OrderRoutes(app) // สำหรับการสร้างคำสั่งซื้อ
 	routes.ProductRoutes(app) // สำหรับการสร้างสินค้า
 	routes.CategoryRoutes(app) // สำหรับการสร้างหมวดหมู่สินค้า Admin
+	routes.CouponRoutes(app) // สำหรับการสร้างคูปอง
 
 	// เรียกใช้ seed ข้อมูล
 	seed.InitSeeder(database.DB)
