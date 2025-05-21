@@ -210,6 +210,8 @@ backend/
 <!-- isntall nuxt 3 & Tailwind -->
 npm create nuxt@latest 
 npm install tailwindcss @tailwindcss/vite
+npm install @nuxtjs/axios
+
 //npm i & npm run build
 ```
 

@@ -8,15 +8,29 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// ดึงข้อมูลสินค้าทั้งหมด
-func GetAllProducts(c *fiber.Ctx) error {
+// ดึงข้อมูลสินค้าทั้งหมด + ค้นหา + กรองตามหมวดหมู่
+func GetPublicProducts(c *fiber.Ctx) error {
+	search := c.Query("search")
+	categoryID := c.Query("category_id")
+
 	var products []models.Product
-	if err := database.DB.Order("created_at desc").Find(&products).Error; err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "ไม่สามารถดึงข้อมูลสินค้าได้"})
+	db := database.DB.Preload("Category").Order("created_at desc")
+
+	// ถ้ามีคำค้นหา
+	if search != "" {
+		db = db.Where("name LIKE ? OR description LIKE ?", "%"+search+"%", "%"+search+"%")
+	}
+
+	// ถ้ามี category_id
+	if categoryID != "" {
+		db = db.Where("category_id = ?", categoryID)
+	}
+
+	if err := db.Find(&products).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "ไม่สามารถโหลดสินค้าได้"})
 	}
 	return c.JSON(products)
 }
-
 // ดึงข้อมูลสินค้าตาม ID
 func GetProductByID(c *fiber.Ctx) error {
 	id := c.Params("id")
