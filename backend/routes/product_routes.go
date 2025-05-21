@@ -9,7 +9,7 @@ import (
 func ProductRoutes(router fiber.Router) {
 	products := router.Group("/products")
 
-	products.Get("/", controller.GetAllProducts)
+	products.Get("/", controller.GetPublicProducts)
 	products.Get("/:slug", controller.GetProductBySlug)
 
 	// Protected admin routes

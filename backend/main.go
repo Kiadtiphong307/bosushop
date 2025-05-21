@@ -6,7 +6,8 @@ import (
 	"backend/database"
 	"backend/routes"
 	"backend/seed"
-	"fmt"
+
+
 )
 
 func main() {
@@ -25,6 +26,9 @@ func main() {
 	// เรียกใช้ seed ข้อมูล
 	seed.InitSeeder(database.DB)
 
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("Hello, World!")
+	})
 
 	app.Listen(":8080")
 }

@@ -4,41 +4,41 @@ import (
 	"backend/database"
 	"backend/models"
 	"errors"
+
+	"github.com/gosimple/slug"
 )
 
 // ดึงสินค้าทั้งหมด
 func GetAllProducts() ([]models.Product, error) {
 	var products []models.Product
-	Preload("Category"). 
-	err := database.DB.Order("created_at desc").Find(&products).Error
+	err := database.DB.
+		Preload("Category").
+		Order("created_at desc").
+		Find(&products).Error
 	return products, err
 }
 
-// ดึงสินค้าตาม slug
-func GetProductBySlug(c *fiber.Ctx) error {
-	slug := c.Params("slug")
+// ดึงสินค้าตาม slug (แยกจาก fiber)
+func GetProductBySlug(slug string) (*models.Product, error) {
 	var product models.Product
 	if err := database.DB.
 		Preload("Category").
 		Where("slug = ?", slug).
 		First(&product).Error; err != nil {
-		return c.Status(404).JSON(fiber.Map{"error": "ไม่พบสินค้า"})
+		return nil, err
 	}
-	return c.JSON(product)
+	return &product, nil
 }
 
 // สร้างสินค้าใหม่
 func CreateProduct(product *models.Product) error {
-	// ✅ สร้าง slug ภาษาไทย
 	product.Slug = slug.MakeLang(product.Name, "th")
 
-	// ตรวจสอบ slug ซ้ำ
 	var existSlug models.Product
 	if err := database.DB.Where("slug = ?", product.Slug).First(&existSlug).Error; err == nil {
 		return errors.New("มีสินค้าที่ใช้ slug เดียวกันแล้ว")
 	}
 
-	// ตรวจสอบชื่อซ้ำ
 	var existName models.Product
 	if err := database.DB.Where("name = ?", product.Name).First(&existName).Error; err == nil {
 		return errors.New("ชื่อสินค้านี้มีอยู่แล้ว")
@@ -49,18 +49,24 @@ func CreateProduct(product *models.Product) error {
 
 // แก้ไขสินค้า
 func UpdateProduct(id uint, data *models.Product) (*models.Product, error) {
-	product, err := GetProductByID(id)
-	if err != nil {
+	var product models.Product
+	if err := database.DB.First(&product, id).Error; err != nil {
 		return nil, err
 	}
 
-	*product = *data // แทนค่าทั้งก้อน
-	product.ID = id  // ไม่ให้ id หาย
+	product.Name = data.Name
+	product.Description = data.Description
+	product.Price = data.Price
+	product.ImageURL = data.ImageURL
+	product.Available = data.Available
+	product.Stock = data.Stock
+	product.CategoryID = data.CategoryID
+	product.Slug = slug.MakeLang(data.Name, "th")
 
-	if err := database.DB.Save(product).Error; err != nil {
+	if err := database.DB.Save(&product).Error; err != nil {
 		return nil, err
 	}
-	return product, nil
+	return &product, nil
 }
 
 // ลบสินค้า

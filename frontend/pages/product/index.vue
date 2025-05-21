@@ -8,9 +8,9 @@
         :key="item.id"
         class="border rounded-xl p-4 shadow hover:shadow-lg transition"
       >
-        <img :src="item.ImageURL" alt="" class="w-full h-48 object-cover mb-2 rounded" />
-        <h2 class="font-semibold text-lg">{{ item.Name }}</h2>
-        <p class="text-green-600 font-bold">฿{{ item.Price }}</p>
+        <img :src="item.image_url" alt="" class="w-full h-48 object-cover mb-2 rounded" />
+        <h2 class="font-semibold text-lg">{{ item.name }}</h2>
+        <p class="text-green-600 font-bold">฿{{ item.price }}</p>
         <NuxtLink
           :to="`/product/${item.slug}`"
           class="mt-2 inline-block text-blue-500 hover:underline"
