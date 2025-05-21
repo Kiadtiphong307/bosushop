@@ -10,10 +10,10 @@ func ProductRoutes(router fiber.Router) {
 	products := router.Group("/products")
 
 	products.Get("/", controller.GetAllProducts)
-	products.Get("/:id", controller.GetProductByID)
+	products.Get("/:slug", controller.GetProductBySlug)
 
 	// Protected admin routes
 	products.Post("/", middleware.JWTAuth("admin"), controller.CreateProduct)
-	products.Put("/:id", middleware.JWTAuth("admin"), controller.UpdateProduct)
-	products.Delete("/:id", middleware.JWTAuth("admin"), controller.DeleteProduct)
+	products.Put("/:slug", middleware.JWTAuth("admin"), controller.UpdateProduct)
+	products.Delete("/:slug", middleware.JWTAuth("admin"), controller.DeleteProduct)
 }

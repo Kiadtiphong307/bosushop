@@ -31,11 +31,12 @@ func GetPublicProducts(c *fiber.Ctx) error {
 	}
 	return c.JSON(products)
 }
-// ดึงข้อมูลสินค้าตาม ID
-func GetProductByID(c *fiber.Ctx) error {
-	id := c.Params("id")
+
+// ดึงข้อมูลสินค้าตาม slug
+func GetProductBySlug(c *fiber.Ctx) error {
+	slug := c.Params("slug")
 	var product models.Product
-	if err := database.DB.First(&product, id).Error; err != nil {
+	if err := database.DB.Where("slug = ?", slug).First(&product).Error; err != nil {
 		return c.Status(404).JSON(fiber.Map{"error": "ไม่พบสินค้า"})
 	}
 	return c.JSON(product)

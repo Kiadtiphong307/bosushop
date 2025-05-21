@@ -18,26 +18,28 @@ func InitSeeder(db *gorm.DB) {
 // 🟦 1. เพิ่มหมวดหมู่สินค้า
 func seedCategories(db *gorm.DB) {
 	categories := []models.Category{
-		{Name: "Top-Up"},
+		{Name: "Topup Card"},
 		{Name: "Game ID"},
 	}
 
 	for _, c := range categories {
-		var existing models.Category
-		if err := db.Where("name = ?", c.Name).First(&existing).Error; err != nil {
+		var exist models.Category
+		if err := db.Where("name = ?", c.Name).First(&exist).Error; err != nil {
 			db.Create(&c)
 			log.Println("✅ เพิ่มหมวดหมู่:", c.Name)
 		}
 	}
 }
 
+
 // 🟨 2. เพิ่มสินค้า (เชื่อมกับ CategoryID)
 func seedProducts(db *gorm.DB) {
 	products := []models.Product{
 		{
 			Name:        "Garena Topup 100",
+			Slug:        "garena-topup-100",
 			Description: "บัตรเติมเงิน Garena มูลค่า 100 บาท",
-			ImageURL:    "https://cdn.example.com/garena-100.png",
+			ImageURL:    "https://play-lh.googleusercontent.com/fsA1ivQQMR6-5XoOtHWedMz09DVyF_vQ4xkVHIylyGrmljpdNk4l8OVdfD_WXs8a0Q=w526-h296-rw",
 			Price:       100,
 			CategoryID:  1, // Top-Up
 			Available:   true,
@@ -45,8 +47,9 @@ func seedProducts(db *gorm.DB) {
 		},
 		{
 			Name:        "Free Fire Game ID",
+			Slug:        "free-fire-game-id",
 			Description: "ขายไอดีเกม Free Fire พร้อมใช้",
-			ImageURL:    "https://cdn.example.com/freefire-id.png",
+			ImageURL:    "https://play-lh.googleusercontent.com/fsA1ivQQMR6-5XoOtHWedMz09DVyF_vQ4xkVHIylyGrmljpdNk4l8OVdfD_WXs8a0Q=w526-h296-rw",
 			Price:       350,
 			CategoryID:  2, // Game ID
 			Available:   true,

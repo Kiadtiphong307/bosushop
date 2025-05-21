@@ -12,5 +12,5 @@ func CategoryRoutes(router fiber.Router) {
 	admin := router.Group("/admin/categories", middleware.JWTAuth("admin"))
 	admin.Get("/", controller.GetAllCategories)
 	admin.Post("/", controller.CreateCategory)
-	admin.Delete("/:id", controller.DeleteCategory)
+	admin.Delete("/:slug", controller.DeleteCategory)
 }
