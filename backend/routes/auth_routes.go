@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func Routes(app *fiber.App) {
+func AuthRoutes(app *fiber.App) {
 	auth := app.Group("/auth")
 	
 	auth.Post("/register", controller.Register)
@@ -15,3 +15,5 @@ func Routes(app *fiber.App) {
 	auth.Get("/profile", middleware.JWTAuth(""), controller.Profile)
 
 }
+
+

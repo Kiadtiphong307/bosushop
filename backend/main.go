@@ -17,9 +17,10 @@ func main() {
 	database.InitDatabase()
 
 	// เรียกใช้ routes ทั้งหมด
-	routes.Routes(app) // เรียกใช้ routes ทั้งหมด
-	routes.OrderRoutes(app)
-	routes.ProductRoutes(app)
+	routes.AuthRoutes(app) // สำหรับการสมัครสมาชิกและเข้าสู่ระบบ
+	routes.OrderRoutes(app) // สำหรับการสร้างคำสั่งซื้อ
+	routes.ProductRoutes(app) // สำหรับการสร้างสินค้า
+	routes.CategoryRoutes(app) // สำหรับการสร้างหมวดหมู่สินค้า Admin
 
 	// เรียกใช้ seed ข้อมูล
 	seed.InitSeeder(database.DB)
