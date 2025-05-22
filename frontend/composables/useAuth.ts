@@ -1,4 +1,4 @@
-import { useCookie, useFetch } from '#app'
+import { useCookie } from '#app'
 import { useRouter } from 'vue-router'
 
 export const useAuth = () => {
@@ -18,33 +18,41 @@ export const useAuth = () => {
     user: AuthUser
   }
 
-  // เข้าสู่ระบบ
+  // ✅ เข้าสู่ระบบ
   const login = async (data: { email: string; password: string }) => {
-    const { data: res, error } = await useFetch<AuthResponse>('/api/auth/login', {
-      method: 'POST',
-      body: data
-    })
-    if (error.value) throw error.value
+    try {
+      const res = await $fetch<AuthResponse>('/api/auth/login', {
+        method: 'POST',
+        body: data
+      })
 
-    token.value = res.value?.token || null
-    user.value = res.value?.user || null
-    await router.push('/')
+      token.value = res.token
+      user.value = res.user
+
+      await router.push('/')
+    } catch (error) {
+      throw error
+    }
   }
 
-  // สมัครสมาชิก
+  // ✅ สมัครสมาชิก
   const register = async (data: { username: string; email: string; password: string }) => {
-    const { data: res, error } = await useFetch<AuthResponse>('/api/auth/register', {
-      method: 'POST',
-      body: data
-    })
-    if (error.value) throw error.value
+    try {
+      const res = await $fetch<AuthResponse>('/api/auth/register', {
+        method: 'POST',
+        body: data
+      })
 
-    token.value = res.value?.token || null
-    user.value = res.value?.user || null
-    await router.push('/')
+      token.value = res.token
+      user.value = res.user
+
+      await router.push('/')
+    } catch (error) {
+      throw error
+    }
   }
 
-  // ออกจากระบบ
+  // ✅ ออกจากระบบ
   const logout = () => {
     token.value = null
     user.value = null
